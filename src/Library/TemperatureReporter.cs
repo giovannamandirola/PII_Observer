@@ -2,16 +2,15 @@ using System;
 
 namespace Observer
 {
-    public class TemperatureReporter
+    public class TemperatureReporter : IObserver
     {
-        private bool first;
-        private Temperature last;
-        private TemperatureSensor provider;
+        public bool First { get; set }
+        public Temperature Last { get; set; }
+        private IObservable provider;
 
-        public void StartReporting(TemperatureSensor provider)
+        public void StartReporting(IObservable observable)
         {
-            this.provider = provider;
-            this.first = true;
+            this.First = true;
             this.provider.Subscribe(this);
         }
 
@@ -20,18 +19,18 @@ namespace Observer
             this.provider.Unsubscribe(this);
         }
 
-        public void Update()
+        public void Update(Temperature temperature)
         {
             Console.WriteLine($"The temperature is {this.provider.Current.Degrees}°C at {this.provider.Current.Date:g}");
-            if (first)
+            if (First)
             {
-                last = this.provider.Current;
-                first = false;
+                Last = this.provider.Current;
+                First = false;
             }
             else
             {
-                Console.WriteLine($"   Change: {this.provider.Current.Degrees - last.Degrees}° in " +
-                    $"{this.provider.Current.Date.ToUniversalTime() - last.Date.ToUniversalTime():g}");
+                Console.WriteLine($"   Change: {this.provider.Current.Degrees - Last.Degrees}° in " +
+                    $"{this.provider.Current.Date.ToUniversalTime() - Last.Date.ToUniversalTime():g}");
             }
         }
     }

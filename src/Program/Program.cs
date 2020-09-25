@@ -9,7 +9,7 @@ namespace Observer
             TemperatureSensor monitor = new TemperatureSensor();
             TemperatureReporter reporter = new TemperatureReporter();
             reporter.StartReporting(monitor);
-            monitor.GetTemperature();
+            monitor.NotifyObservers();
         }
     }
 }
