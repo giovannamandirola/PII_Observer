@@ -4,12 +4,13 @@ namespace Observer
 {
     public class TemperatureReporter : IObserver
     {
-        public bool First { get; set }
+        public bool First { get; set; }
         public Temperature Last { get; set; }
         private IObservable provider;
 
         public void StartReporting(IObservable observable)
         {
+            provider = observable;
             this.First = true;
             this.provider.Subscribe(this);
         }
